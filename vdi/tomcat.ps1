@@ -26,6 +26,7 @@ $SMTP_USERNAME = "_SMTP_USERNAME_"
 $SMTP_PASSWORD = "_SMTP_PASSWORD_"
 $SMTP_FROM = "_SMTP_FROM_"
 $LANGUAGE = "_LANGUAGE_"
+$SERVER_WAR = "launcher.war"
 
 
 #tomcat section
@@ -66,4 +67,7 @@ Copy-Item -Path "../install/$LOG4J_TEMPLATE_NAME" -Destination "$tomcat_base\$hm
 #TO DO:Remove with custom confirmation
 Remove-Item "$tomcat_base\conf\$TOMCAT_ENGINE_NAME\$TOMCAT_HOST_NAME\$hmdm_base_name.xml" -Force
 Copy-Item -Path "../install/$WEB_CONFIG_TEMPLATE_NAME" -Destination "$tomcat_base\conf\$TOMCAT_ENGINE_NAME\$TOMCAT_HOST_NAME\$hmdm_base_name.xml"
+
+
+
 

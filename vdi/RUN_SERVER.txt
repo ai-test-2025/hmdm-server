@@ -1,0 +1,31 @@
+#Tomcat Setup
+1. Download from  https://tomcat.apache.org/download-90.cgi
+`64-bit Windows zip
+2. Unizip the downloaded file to folder (C:\AI\tomcat9)
+
+3. Go to /bin and open catalina.bat in notepad 
+add the below line under setlocal section
+SET JRE_HOME=C:\AI\zulu8\jre #Modify the path value as per your java binary path
+
+4. To verify tomcat is running correctly
+   open cmd and navigate to tomcat bin folder
+   run startup.bat
+5. Enter http://localhost:8080/ in browser to verify tomcat default page is showing up
+
+#Configure Application
+1. Download and install postgres 15 for windows
+https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
+
+
+
+#run installation script /vdi/hmdm_install.ps1
+
+1. Open windows powershell as adminsitrator and run the below command 
+set-ExecutionPolicy unrestricted
+(Confirm change by entering Y+Enter)
+
+2. nagigate to hmdm-server\vdi folder in powershell prompt
+(e.g. cd C:\AI\hmdm-server\vdi)
+
+3. run installtion script
+ ./hmdm_install.ps1

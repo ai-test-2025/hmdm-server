@@ -139,6 +139,13 @@ Copy-Item -Path "../install/$LOG4J_TEMPLATE_NAME" -Destination "$tomcat_base\$hm
 #TO DO:Remove with custom confirmation
 Remove-Item "$tomcat_base\conf\$TOMCAT_ENGINE_NAME\$TOMCAT_HOST_NAME\$hmdm_base_name.xml" -Force
 Copy-Item -Path "../install/$WEB_CONFIG_TEMPLATE_NAME" -Destination "$tomcat_base\conf\$TOMCAT_ENGINE_NAME\$TOMCAT_HOST_NAME\$hmdm_base_name.xml"
-
-
-#Write-Host $pgConnString
+#-- Replace base directory
+(Get-Content "$tomcat_base\conf\$TOMCAT_ENGINE_NAME\$TOMCAT_HOST_NAME\$hmdm_base_name.xml").replace("$BASE_DIRECTORY","$tomcat_base\$hmdm_base_name") | Set-Content "$tomcat_base\conf\$TOMCAT_ENGINE_NAME\$TOMCAT_HOST_NAME\$hmdm_base_name.xml"
+#-- Postgres Config
+(Get-Content "$tomcat_base\conf\$TOMCAT_ENGINE_NAME\$TOMCAT_HOST_NAME\$hmdm_base_name.xml").replace("$SQL_HOST","$postgres_host") | Set-Content "$tomcat_base\conf\$TOMCAT_ENGINE_NAME\$TOMCAT_HOST_NAME\$hmdm_base_name.xml"
+(Get-Content "$tomcat_base\conf\$TOMCAT_ENGINE_NAME\$TOMCAT_HOST_NAME\$hmdm_base_name.xml").replace("$SQL_PORT","$postgres_port") | Set-Content "$tomcat_base\conf\$TOMCAT_ENGINE_NAME\$TOMCAT_HOST_NAME\$hmdm_base_name.xml"
+(Get-Content "$tomcat_base\conf\$TOMCAT_ENGINE_NAME\$TOMCAT_HOST_NAME\$hmdm_base_name.xml").replace("$SQL_BASE","$hmdm_db_name") | Set-Content "$tomcat_base\conf\$TOMCAT_ENGINE_NAME\$TOMCAT_HOST_NAME\$hmdm_base_name.xml"
+(Get-Content "$tomcat_base\conf\$TOMCAT_ENGINE_NAME\$TOMCAT_HOST_NAME\$hmdm_base_name.xml").replace("$SQL_USER","$hmdm_login_role") | Set-Content "$tomcat_base\conf\$TOMCAT_ENGINE_NAME\$TOMCAT_HOST_NAME\$hmdm_base_name.xml"
+(Get-Content "$tomcat_base\conf\$TOMCAT_ENGINE_NAME\$TOMCAT_HOST_NAME\$hmdm_base_name.xml").replace("$SQL_PASS","$hmdm_login_role_pass") | Set-Content "$tomcat_base\conf\$TOMCAT_ENGINE_NAME\$TOMCAT_HOST_NAME\$hmdm_base_name.xml"
+#-- install flag
+(Get-Content "$tomcat_base\conf\$TOMCAT_ENGINE_NAME\$TOMCAT_HOST_NAME\$hmdm_base_name.xml").replace("$INSTALL_FLAG","$tomcat_base\$hmdm_base_name\$INSTALL_FLAG_NAME") | Set-Content "$tomcat_base\conf\$TOMCAT_ENGINE_NAME\$TOMCAT_HOST_NAME\$hmdm_base_name.xml"
