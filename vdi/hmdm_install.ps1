@@ -52,6 +52,7 @@ $HMDM_APK = "_HMDM_APK_"
 $CLIENT_VERSION = "5.19"
 $CLIENT_VARIANT = "os"
 $CLIENT_APK="hmdm-$CLIENT_VERSION-$CLIENT_VARIANT.apk"
+$TIMEOUT = 30
 
 
 #common section
@@ -230,9 +231,38 @@ Remove-Item "$tomcat_base\webapps\$hmdm_root\*" -Force
 #TO DO: Implement file not found and other error handling
 Copy-Item -Path "../Server/target/$APP_WAR" -Destination "$tomcat_base\webapps\$hmdm_root.war"
 
-#Launch Tomcat and Wait 2 minutes
+#Launch Tomcat and Wait 30 Seconds
+$currentDirectory = Get-Location
+Set-Location $tomcat_base/bin
+$tomcatShutDown = Start-Process -FilePath "shutdown.bat" -PassThru
+$tomcatShutDown.WaitForExit($TIMEOUT  * 1000)
+if (-not $tomcatShutDown.HasExited) {
+    Write-Host "Timeout reached. Process is still running."
+} else {
+	if($tomcatStartUp.ExitCode -eq 0){
+		Start-Sleep -Seconds 30
+	} else {
+	    Write-Host "Process exited with code $($tomcatStartUp.ExitCode)"
+	}
+}
 
+$tomcatStartUp = Start-Process -FilePath "startup.bat" -PassThru
+$tomcatStartUp.WaitForExit($TIMEOUT  * 1000)
+if (-not $tomcatStartUp.HasExited) {
+    Write-Host "Timeout reached. Process is still running."
+} else {
+	if($tomcatStartUp.ExitCode -eq 0){
+		Start-Sleep -Seconds 30
+	} else {
+	    Write-Host "Process exited with code $($tomcatStartUp.ExitCode)"
+		Set-Location $currentDirectory
+		exit "DB upgrade aborted"
+	}
+}
 
+Set-Location $currentDirectory
+
+#Run DB Modification
 
 Copy-Item -Path "../install/sql/hmdm_init.$hmdm_language.sql" -Destination "$hmdm_base_directory/hmdm_init.$hmdm_language.sql"
 
