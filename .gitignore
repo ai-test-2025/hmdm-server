@@ -4,6 +4,8 @@ target
 # idea 
 *.iml
 .idea
+#backup
+.bak
 
 # node modules for grunt
 server/webtarget/node
