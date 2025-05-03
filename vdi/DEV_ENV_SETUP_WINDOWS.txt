@@ -66,6 +66,13 @@ a) Choose JDK 1.8, Language Level 8
 # Build:
 1. open "hmdm-server" folder as project in Intellij Idea 
 2. Go to Maven lifecycles and click on install
+
+
+note: 
+If you are not building this in VDI
+rename or remove : server\webtarget\.bowerrc
+rename or remove : server\webtarget\.npmrc
+
    
    
    
