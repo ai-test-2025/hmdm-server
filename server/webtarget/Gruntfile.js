@@ -30,13 +30,47 @@ module.exports = function( grunt ) {
                          { expand: true, cwd: 'lib/bootstrap-css-only/', src: [ '*.css' ], dest: '../src/main/webapp/lib/bootstrap-css-only/css/' },
                          { expand: true, cwd: 'lib/bootstrap-css-only/', src: [ 'glyphicons*' ], dest: '../src/main/webapp/lib/bootstrap-css-only/fonts/' } ]
             }
-        }
+        },
+		
+		// Connect: Dev server
+		connect: {
+		  options: {
+			port: 9000,
+			hostname: 'localhost',
+			livereload: 35729
+		  },
+		  livereload: {
+			options: {
+			  open: true,
+			  base: '../src/main/webapp'
+			}
+		  }
+		},
+
+		// Watch: Auto reload on file changes
+		watch: {
+		  options: {
+			livereload: true
+		  },
+		  js: {
+			files: ['../src/main/webapp/scripts/{,*/}*.js'],
+		  },
+		  html: {
+			files: ['../src/main/webapp/{,*/}*.html'],
+		  },
+		  css: {
+			files: ['../src/main/webapp/styles/{,*/}*.css'],
+		  }
+		}
     });
 
     grunt.loadNpmTasks( 'grunt-bower-task' );
     grunt.loadNpmTasks( 'grunt-contrib-clean' );
     grunt.loadNpmTasks( 'grunt-contrib-copy' );
+	grunt.loadNpmTasks('grunt-contrib-connect');
+	grunt.loadNpmTasks('grunt-contrib-watch');
+	
 
     grunt.registerTask( 'resolve', [ 'clean:dist', 'bower:install', 'copy' ] );
-    grunt.registerTask( 'remove-node-modules', [ 'clean:nodeModules'] );
+	grunt.registerTask( 'serve',  ['connect:livereload','watch'] );
 };
