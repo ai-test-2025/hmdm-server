@@ -7,7 +7,10 @@
     "grunt-bower-task": "~0.5.0",
     "grunt-cli": "~1.3.2",
     "grunt-contrib-clean": "~2.0.0",
-    "grunt-contrib-copy": "~1.0.0"
+    "grunt-contrib-copy": "~1.0.0",
+	"grunt-contrib-connect": "~5.0.1",
+	"grunt-contrib-watch": "~1.1.0",
+	"grunt-open": "~0.2.4"
   },
   "dependencies": {
     "leaflet.gridlayer.googlemutant": "~0.8.0"
@@ -17,6 +20,7 @@
     "lodash": "4.17.12"
   },
   "scripts": {
-    "npm-force-resolutions": "node ./node/node_modules/npm/bin/npx-cli.js --userconfig .npmrc npm-force-resolutions"
+    "npm-force-resolutions": "node ./node/node_modules/npm/bin/npx-cli.js --userconfig .npmrc npm-force-resolutions",
+	"start": "grunt serve"
   }
 }
