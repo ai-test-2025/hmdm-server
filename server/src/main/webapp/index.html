@@ -1,6 +1,7 @@
 <html ng-app='headwind-kiosk'>
 <head>
     <meta charset='UTF-8'>
+    <meta Content-Security-Policy-Report-Only: script-src https://accounts.google.com/gsi/client; frame-src https://accounts.google.com/gsi/; connect-src https://accounts.google.com/gsi/; />
     <title>MDM server</title>
 
     <link href="images/favicon.ico" rel="icon" type="image/x-icon" />
@@ -99,6 +100,7 @@
 
     <link rel='stylesheet' type='text/css' href='lib/bootstrap-css-only/css/bootstrap.css'>
     <link rel='stylesheet' type='text/css' href='css/main.css'>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
     <div ng-include='"app/components/main/view/main.html"'></div>

@@ -7,6 +7,16 @@ angular.module('headwind-kiosk')
         }
 
         return {
+            socialLogin: function (idToken, successCallback) {
+                debugger
+                serverAuthService.socialLogin({idToken: idToken}, function (response) {
+                    if (response.status === "OK") {
+                        debugger
+                    }
+                    debugger
+                    successCallback(response);
+                });
+            },
             login: function (login, password, successCallback) {
                 serverAuthService.login({login: login, password: password}, function (response) {
                     if (response.status === "OK") {
@@ -91,6 +101,7 @@ angular.module('headwind-kiosk')
         return $resource('rest/public/auth/', {}, {
             login: {url: 'rest/public/auth/login', method: 'POST'},
             logout: {url: 'rest/public/auth/logout', method: 'POST'},
-            options: {url: 'rest/public/auth/options', method: 'GET'}
+            options: {url: 'rest/public/auth/options', method: 'GET'},
+            socialLogin: {url: 'rest/public/auth/google', method: 'POST'}
         });
     });

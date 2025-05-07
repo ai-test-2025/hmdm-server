@@ -47,6 +47,17 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.security.PublicKey;
 import java.util.Base64;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Optional;
+
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.googleapis.auth.oauth2.GooglePublicKeysManager;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
+
+import com.hmdm.guice.module.ConfigureModule;
 
 /**
  * <p>A resource for authenticating the users based on provided login/password credentials.</p>
@@ -66,6 +77,8 @@ public class AuthResource {
     private RsaKeyService rsaKeyService;
     private boolean transmitPassword;
     private HmdmAuthInterface authEngine;
+    private static final String CLIENT_ID = "592479665525-d9uc7qf9i8lan0q9aa0t0kgaj0phin0u.apps.googleusercontent.com";
+
 
     /**
      * <p>A constructor required by Swagger.</p>
@@ -204,5 +217,49 @@ public class AuthResource {
             response.setPublicKey(encoded);
         }
         return Response.OK(response);
+    }
+
+    @POST
+    @Path("/google")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response googleSignIn(Map<String, String> request) {
+        String idToken = request.get("idToken");
+
+        try {
+            Optional<GoogleIdToken.Payload> payloadOpt = verify(idToken);
+            if (!payloadOpt.isPresent()) {
+                return Response.ERROR("Invalid Token");
+            }
+
+            GoogleIdToken.Payload payload = payloadOpt.get();
+            String email = payload.getEmail();
+            String name = (String) payload.get("name");
+
+            // 1. Lookup user in DB
+            // 2. If new, register user
+            // 3. Generate session token (e.g., JWT)
+            System.out.println(email);
+            System.out.println(name);
+            //validate user here
+
+            return Response.OK("Success");
+
+        } catch (Exception e) {
+            return Response.ERROR("Invalid Token" + "Auth error: " + e.getMessage());
+        }
+    }
+
+    public Optional<GoogleIdToken.Payload> verify(String idTokenString) throws Exception {
+        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(
+                new NetHttpTransport(), new GsonFactory())
+                .setAudience(Collections.singletonList(CLIENT_ID))
+                .build();
+
+        GoogleIdToken idToken = verifier.verify(idTokenString);
+        if (idToken != null) {
+            return Optional.of(idToken.getPayload());
+        }
+        return Optional.empty();
     }
 }

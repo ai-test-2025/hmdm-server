@@ -556,4 +556,10 @@ angular.module('headwind-kiosk',
                 return trans.router.stateService.target('main');
             }
         });
+        $window.handleCredentialResponse = function(response) {
+            var idToken = response.credential;
+            authService.socialLogin(idToken, function(res){
+                debugger
+            });
+        }
     });
